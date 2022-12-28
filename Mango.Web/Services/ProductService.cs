@@ -14,7 +14,7 @@ public class ProductService : BaseService, IProductService
         ILogger<BaseService> logger)
         : base(httpClientFactory, logger)
     {
-        _baseUrl = $"{serviceUrls.ProductApi}api/v1/products";
+        _baseUrl = $"{serviceUrls.ProductApi}/api/v1/products";
     }
 
     public Task<Result<List<ProductDto>?>> GetProducts()
@@ -26,7 +26,7 @@ public class ProductService : BaseService, IProductService
         });
     }
 
-    public Task<Result<ProductDto?>> GetProduct(Guid id)
+    public Task<Result<ProductDto?>> GetProduct(string id)
     {
         return Send<ProductDto>(new ApiRequest
         {
@@ -55,7 +55,7 @@ public class ProductService : BaseService, IProductService
         });
     }
 
-    public Task<Result<object?>> DeleteProduct(Guid id)
+    public Task<Result<object?>> DeleteProduct(string id)
     {
         return Send<object>(new ApiRequest
         {

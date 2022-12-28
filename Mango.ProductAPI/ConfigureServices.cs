@@ -19,5 +19,6 @@ public static class ConfigureServices
 
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryService, CategoryService>();
     }
 }

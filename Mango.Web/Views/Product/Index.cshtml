@@ -1,0 +1,85 @@
+﻿@model Commons.Result<List<Commons.Dtos.ProductDto>?>
+@{
+    ViewData["Title"] = "Products";
+}
+
+@if (Model.Succeeded && Model.Data != null)
+{
+    <div class="container p-4 border">
+        <div class="row pb-2">
+            <div class="col">
+                <h1 class="text-primary">Products List</h1>
+            </div>
+            <div class="col text-end pt-1">
+                <a asp-action="Create" class="btn btn-outline-info">
+                    <i class="fas fa-plus"></i>
+                    Create New Product
+                </a>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Data)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.CategoryName</td>
+                        <td>@product.Price.ToString("c")</td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id=@product.Id id="delete-@product.Id">
+                                <a asp-action="Edit" asp-route-id=@product.Id class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-danger delete-button" data-id="@product.Id" type="button"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure to delete this product?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="delete-confirm-btn">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script>
+        (() => {
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            let selectedId;
+            $('.delete-button').click(function() {
+                modal.show();
+                selectedId = $(this).data('id');
+            });
+
+            $('#delete-confirm-btn').click(() => {
+                $('#delete-' + selectedId).first().submit();
+                modal.hide();
+            });
+        })();
+    </script>
+}

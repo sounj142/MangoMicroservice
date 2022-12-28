@@ -2,12 +2,17 @@
 
 public class Result<T>
 {
-    public bool Succeeded { get; }
-    public string[] Messages { get; }
-    public string? ErrorCode { get; }
-    public T? Data { get; }
+    public bool Succeeded { get; set; }
+    public string[] Messages { get; set; }
+    public string? ErrorCode { get; set; }
+    public T? Data { get; set; }
 
-    protected Result(bool succeeded, T? data, string? message,
+    public Result()
+    {
+        Messages = Array.Empty<string>();
+    }
+
+    public Result(bool succeeded, T? data, string? message,
         string? errorCode = null)
     {
         Succeeded = succeeded;
