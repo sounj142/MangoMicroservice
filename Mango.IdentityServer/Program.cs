@@ -1,7 +1,9 @@
+using Mango.IdentityServer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+ConfigureServices.Config(builder);
 
 var app = builder.Build();
 
@@ -17,6 +19,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseIdentityServer();
 
 app.UseAuthorization();
 
