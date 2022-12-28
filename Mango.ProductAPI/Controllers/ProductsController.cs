@@ -1,5 +1,5 @@
 using Commons;
-using Commons.Dtos;
+using Mango.ProductAPI.Dtos;
 using Mango.ProductAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 

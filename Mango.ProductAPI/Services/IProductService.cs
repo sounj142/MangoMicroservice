@@ -1,5 +1,5 @@
 ﻿using Commons;
-using Commons.Dtos;
+using Mango.ProductAPI.Dtos;
 
 namespace Mango.ProductAPI.Services;
 

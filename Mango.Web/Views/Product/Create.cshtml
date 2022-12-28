@@ -1,9 +1,9 @@
-﻿@model Commons.Dtos.ProductCreateDto
+﻿@model Mango.Web.Dtos.ProductCreateDto
 @{
     ViewData["Title"] = "Create Product";
-    var categoriesResult = ViewBag.Categories as Commons.Result<List<Commons.Dtos.CategoryDto>?>;
+    var categoriesResult = ViewBag.Categories as Commons.Result<List<Mango.Web.Dtos.CategoryDto>?>;
     List<SelectListItem> categories = new();
-    if (categoriesResult.Succeeded && categoriesResult.Data != null)
+    if (categoriesResult?.Data != null && categoriesResult.Succeeded)
     {
         categories = categoriesResult.Data.Select(x => new SelectListItem(x.Name, x.Id)).ToList();
     }

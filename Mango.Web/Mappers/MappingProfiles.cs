@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Commons.Dtos;
+using Mango.Web.Dtos;
 
 namespace Mango.Web.Mappers;
 

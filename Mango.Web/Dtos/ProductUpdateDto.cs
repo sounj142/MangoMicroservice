@@ -1,4 +1,4 @@
-﻿namespace Commons.Dtos;
+﻿namespace Mango.Web.Dtos;
 
 public class ProductUpdateDto : ProductCreateDto
 {

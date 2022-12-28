@@ -1,4 +1,4 @@
-﻿namespace Commons.Dtos;
+﻿namespace Mango.ProductAPI.Dtos;
 
 public class CategoryDto
 {
