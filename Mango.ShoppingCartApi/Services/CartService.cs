@@ -27,7 +27,6 @@ public class CartService : ICartService
             UserId = userId,
             CartDetails = new List<CartDetails>()
         };
-        CalculateCartPrices(cart);
         _dbContext.CartHeaders.Add(cart);
         await _dbContext.SaveChangesAsync();
         return cart;
@@ -89,7 +88,6 @@ public class CartService : ICartService
             cartDetail.Count = count;
         }
 
-        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
@@ -108,7 +106,6 @@ public class CartService : ICartService
             .Where(x => x.ProductId != productId)
             .ToList();
 
-        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
@@ -124,7 +121,6 @@ public class CartService : ICartService
 
         cart.CartDetails!.Clear();
         cart.CouponCode = null;
-        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<object>.Success(null);
@@ -140,18 +136,8 @@ public class CartService : ICartService
             return Result<CartHeaderDto>.Failure("Cart not found.");
 
         cart.CouponCode = couponCode;
-        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
-    }
-
-    private void CalculateCartPrices(CartHeader cart)
-    {
-        cart.TotalPrice = cart.CartDetails!.Sum(x => x.Count * x.Product!.Price);
-        cart.TotalCoupon = 0;
-        if (cart.CouponCode == "10%OFF")
-            cart.TotalCoupon = cart.TotalPrice * 10.0 / 100;
-        cart.FinalPrice = cart.TotalPrice - cart.TotalCoupon;
     }
 }
