@@ -1,15 +1,16 @@
-﻿using Mango.ProductAPI.Models;
+﻿using Mango.ShoppingCartApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mango.ProductAPI.DbContexts;
+namespace Mango.ShoppingCartApi.Repositories;
 
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    : base(options)
     {
     }
 
-    public DbSet<Category> Categories => Set<Category>();
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<CartHeader> CartHeaders => Set<CartHeader>();
+    public DbSet<CartDetails> CartDetails => Set<CartDetails>();
 }
