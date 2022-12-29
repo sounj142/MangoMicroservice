@@ -34,8 +34,8 @@ namespace Mango.IdentityServer.Services
             claims.Add(new Claim(JwtClaimTypes.GivenName, user.LastName));
 
             // filter claims by scopes
-            claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type))
-                .ToList();
+            claims = claims.Where(claim => claim.Type == JwtClaimTypes.Role
+                || context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
             context.IssuedClaims = claims;
         }

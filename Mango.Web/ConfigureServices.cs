@@ -42,7 +42,7 @@ public static class ConfigureServices
             options.ClientId = "MangoWeb";
             options.ClientSecret = builder.Configuration["Identity:Secret"];
             options.ResponseType = "code";
-            options.ClaimActions.MapUniqueJsonKey("role", "role", "role");
+            options.ClaimActions.MapJsonKey("role", "role", "role");
             options.ClaimActions.MapJsonKey("sub", "sub", "sub");
 
             options.TokenValidationParameters.NameClaimType = "name";

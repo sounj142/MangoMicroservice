@@ -228,13 +228,8 @@ namespace Mango.IdentityServer.UI
                     await _userManager.AddToRoleAsync(user, Statics.CustomerRole);
 
                     await _userManager.AddClaimsAsync(user, new Claim[]{
-                            //new Claim(JwtClaimTypes.Name, model.Username),
-                            //new Claim(JwtClaimTypes.Email, model.Email),
-                            //new Claim(JwtClaimTypes.FamilyName, model.FirstName),
-                            //new Claim(JwtClaimTypes.GivenName, model.LastName),
-                            //new Claim(JwtClaimTypes.Role, Statics.CustomerRole)
                             new Claim(JwtClaimTypes.WebSite, "http://"+model.Username+".com"),
-                            });
+                    });
 
                     var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 

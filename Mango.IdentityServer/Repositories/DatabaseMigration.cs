@@ -69,10 +69,6 @@ public class DatabaseMigration
         await userManager.AddToRoleAsync(adminUser, Statics.AdminRole);
         await userManager.AddClaimsAsync(adminUser, new Claim[]
         {
-            //new Claim(JwtClaimTypes.Name, adminUser.UserName),
-            //new Claim(JwtClaimTypes.GivenName, adminUser.FirstName),
-            //new Claim(JwtClaimTypes.FamilyName, adminUser.LastName),
-            //new Claim(JwtClaimTypes.Role, Statics.AdminRole),
             new Claim(JwtClaimTypes.WebSite, "http://"+adminUser.UserName+".com"),
         });
 
@@ -89,10 +85,6 @@ public class DatabaseMigration
         await userManager.AddToRoleAsync(customerUser, Statics.CustomerRole);
         await userManager.AddClaimsAsync(customerUser, new Claim[]
         {
-            //new Claim(JwtClaimTypes.Name, customerUser.UserName),
-            //new Claim(JwtClaimTypes.GivenName, customerUser.FirstName),
-            //new Claim(JwtClaimTypes.FamilyName, customerUser.LastName),
-            //new Claim(JwtClaimTypes.Role, Statics.CustomerRole),
             new Claim(JwtClaimTypes.WebSite, "http://"+customerUser.UserName+".com"),
         });
     }
