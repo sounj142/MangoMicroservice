@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Mango.Web.Dtos;
 using Mango.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.Web.Controllers
@@ -85,6 +86,7 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {

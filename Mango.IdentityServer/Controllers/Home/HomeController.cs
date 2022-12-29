@@ -1,12 +1,11 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Duende.IdentityServer.Services;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace Mango.IdentityServer.UI
 {
     [SecurityHeaders]
     [AllowAnonymous]

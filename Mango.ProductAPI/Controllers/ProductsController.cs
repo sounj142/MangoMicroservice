@@ -1,6 +1,7 @@
 using Commons;
 using Mango.ProductAPI.Dtos;
 using Mango.ProductAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.ProductAPI.Controllers
@@ -25,12 +26,14 @@ namespace Mango.ProductAPI.Controllers
             else return Result<T>.Failure("Product not found.");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<Result<List<ProductDto>?>> GetProducts()
         {
             return await _productService.GetProducts();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public Task<Result<ProductDto?>> GetProduct(string id)
         {
@@ -38,12 +41,14 @@ namespace Mango.ProductAPI.Controllers
                 (parsedId) => _productService.GetProduct(parsedId));
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public Task<Result<ProductDto?>> CreateProduct(ProductCreateDto model)
         {
             return _productService.CreateProduct(model);
         }
 
+        [Authorize(Roles = "Admin,Customer")]
         [HttpPut("{id}")]
         public Task<Result<ProductDto?>> UpdateProduct(string id, ProductCreateDto model)
         {
@@ -51,6 +56,7 @@ namespace Mango.ProductAPI.Controllers
                 (parsedId) => _productService.UpdateProduct(parsedId, model));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public Task<Result<object?>> DeleteProduct(string id)
         {

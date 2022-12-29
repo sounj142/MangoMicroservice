@@ -1,4 +1,5 @@
 using Mango.IdentityServer;
+using Mango.IdentityServer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigureServices.Config(builder);
 
 var app = builder.Build();
+await DatabaseMigration.InitializeDatabase(app.Services);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

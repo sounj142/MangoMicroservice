@@ -1,6 +1,7 @@
 ﻿using Mango.Web.Mappers;
 using Mango.Web.Models;
 using Mango.Web.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Mango.Web;
 
@@ -12,6 +13,7 @@ public static class ConfigureServices
 
         services.AddControllersWithViews();
         services.AddHttpClient();
+        services.AddHttpContextAccessor();
 
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
@@ -19,5 +21,28 @@ public static class ConfigureServices
             builder.Configuration.GetSection("ServiceUrls").Get<ServiceUrls>());
 
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = "Cookies";
+            options.DefaultChallengeScheme = "oidc";
+        })
+        .AddCookie("Cookies", cookies =>
+        {
+            cookies.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+        })
+        .AddOpenIdConnect("oidc", options =>
+        {
+            options.Authority = builder.Configuration["ServiceUrls:IdentityServer"];
+            options.GetClaimsFromUserInfoEndpoint = true;
+            options.ClientId = "MangoWeb";
+            options.ClientSecret = builder.Configuration["Identity:Secret"];
+            options.ResponseType = "code";
+
+            options.TokenValidationParameters.NameClaimType = "name";
+            options.TokenValidationParameters.RoleClaimType = "role";
+            options.Scope.Add("MangoApp");
+            options.SaveTokens = true;
+        });
     }
 }

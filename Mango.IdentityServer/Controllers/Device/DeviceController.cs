@@ -1,7 +1,6 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
-
 using Duende.IdentityServer.Configuration;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
@@ -12,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace Mango.IdentityServer.UI
 {
     [Authorize]
     [SecurityHeaders]
@@ -212,6 +211,7 @@ namespace IdentityServerHost.Quickstart.UI
                 Checked = check || apiScope.Required
             };
         }
+
         private ScopeViewModel GetOfflineAccessScope(bool check)
         {
             return new ScopeViewModel

@@ -8,5 +8,4 @@ public class ApiRequest
     public object? Params { get; set; }
 
     public object? Body { get; set; }
-    public string AccessToken { get; set; } = string.Empty;
 }

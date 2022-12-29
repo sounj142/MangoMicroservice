@@ -11,8 +11,9 @@ public class CategoryService : BaseService, ICategoryService
     public CategoryService(
         ServiceUrls serviceUrls,
         IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
         ILogger<BaseService> logger)
-        : base(httpClientFactory, logger)
+        : base(httpClientFactory, httpContextAccessor, logger)
     {
         _baseUrl = $"{serviceUrls.ProductApi}/api/v1/categories";
     }

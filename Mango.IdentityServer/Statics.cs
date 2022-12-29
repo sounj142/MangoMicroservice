@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using IdentityModel;
 
 namespace Mango.IdentityServer;
 
@@ -8,7 +9,7 @@ public static class Statics
     public const string AdminRole = "Admin";
     public const string CustomerRole = "Customer";
 
-    public const string MangoAdminScope = "MangoAdmin";
+    public const string MangoApp = "MangoApp";
 
     public static IReadOnlyList<IdentityResource> IdentityResources
         = new List<IdentityResource>
@@ -20,7 +21,14 @@ public static class Statics
 
     public static IReadOnlyList<ApiScope> ApiScopes = new List<ApiScope>
     {
-        new ApiScope(MangoAdminScope, "Mango Admin Scope")
+        new ApiScope(MangoApp, "Mango App Scope", new [] {
+            JwtClaimTypes.Name,
+            JwtClaimTypes.Email,
+            JwtClaimTypes.WebSite,
+            JwtClaimTypes.FamilyName,
+            JwtClaimTypes.GivenName,
+            JwtClaimTypes.Role,
+        })
     };
 
     public static IReadOnlyList<Client> GenerateClients(IConfiguration configuration) => new List<Client>
@@ -37,7 +45,7 @@ public static class Statics
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
                 IdentityServerConstants.StandardScopes.Email,
-                MangoAdminScope
+                MangoApp
             }
         }
     };

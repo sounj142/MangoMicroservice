@@ -1,6 +1,7 @@
 using Commons;
 using Mango.ProductAPI.Dtos;
 using Mango.ProductAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.CategoryAPI.Controllers
@@ -16,6 +17,7 @@ namespace Mango.CategoryAPI.Controllers
             _categoryService = categoryService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<Result<List<CategoryDto>?>> GetCategories()
         {

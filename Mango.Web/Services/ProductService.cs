@@ -11,8 +11,9 @@ public class ProductService : BaseService, IProductService
     public ProductService(
         ServiceUrls serviceUrls,
         IHttpClientFactory httpClientFactory,
+        IHttpContextAccessor httpContextAccessor,
         ILogger<BaseService> logger)
-        : base(httpClientFactory, logger)
+        : base(httpClientFactory, httpContextAccessor, logger)
     {
         _baseUrl = $"{serviceUrls.ProductApi}/api/v1/products";
     }

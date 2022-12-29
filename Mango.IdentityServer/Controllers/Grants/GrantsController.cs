@@ -1,7 +1,6 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
-
 using Microsoft.AspNetCore.Mvc;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
@@ -9,7 +8,7 @@ using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Microsoft.AspNetCore.Authorization;
 
-namespace IdentityServerHost.Quickstart.UI
+namespace Mango.IdentityServer.UI
 {
     /// <summary>
     /// This sample controller allows a user to revoke grants given to clients
@@ -61,7 +60,7 @@ namespace IdentityServerHost.Quickstart.UI
             var grants = await _interaction.GetAllUserGrantsAsync();
 
             var list = new List<GrantViewModel>();
-            foreach(var grant in grants)
+            foreach (var grant in grants)
             {
                 var client = await _clients.FindClientByIdAsync(grant.ClientId);
                 if (client != null)
