@@ -51,7 +51,7 @@ public class BaseService
             if (!response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
-                _logger.LogWarning($"Error calling product API respond. Status code: {(int)response.StatusCode}, Body: {responseBody}");
+                _logger.LogWarning($"Error calling API. Status code: {(int)response.StatusCode}, Body: {responseBody}");
                 var message = response.StatusCode == HttpStatusCode.Forbidden ?
                     "You don't have permission to do this action." : "Error in Http response.";
                 return Result<T>.Failure(message, "HttpRequestError");

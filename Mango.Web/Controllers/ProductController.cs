@@ -61,7 +61,7 @@ namespace Mango.Web.Controllers
             var productResult = await _productService.GetProduct(id);
             if (!productResult.Succeeded)
             {
-                return RedirectToAction(nameof(Error),
+                return RedirectToAction("Index", "Error",
                     new { message = productResult.Messages.FirstOrDefault() });
             }
 
@@ -94,15 +94,10 @@ namespace Mango.Web.Controllers
             var result = await _productService.DeleteProduct(id);
             if (!result.Succeeded)
             {
-                return RedirectToAction(nameof(Error),
+                return RedirectToAction("Index", "Error",
                     new { message = result.Messages.FirstOrDefault() });
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Error([FromQuery] string message)
-        {
-            return View((object)message);
         }
     }
 }

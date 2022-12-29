@@ -1,6 +1,7 @@
 ﻿using Mango.Web.Mappers;
 using Mango.Web.Models;
 using Mango.Web.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Mango.Web;
@@ -15,8 +16,11 @@ public static class ConfigureServices
         services.AddHttpClient();
         services.AddHttpContextAccessor();
 
+        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICartService, CartService>();
+
         services.AddSingleton((provider) =>
             builder.Configuration.GetSection("ServiceUrls").Get<ServiceUrls>());
 
@@ -38,6 +42,8 @@ public static class ConfigureServices
             options.ClientId = "MangoWeb";
             options.ClientSecret = builder.Configuration["Identity:Secret"];
             options.ResponseType = "code";
+            options.ClaimActions.MapUniqueJsonKey("role", "role", "role");
+            options.ClaimActions.MapJsonKey("sub", "sub", "sub");
 
             options.TokenValidationParameters.NameClaimType = "name";
             options.TokenValidationParameters.RoleClaimType = "role";

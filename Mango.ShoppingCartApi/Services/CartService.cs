@@ -51,13 +51,6 @@ public class CartService : ICartService
         if (count < 1)
             return await RemoveFromCart(userId, product.Id);
 
-        var cart = await _dbContext.CartHeaders
-            .Include(c => c.CartDetails!)
-            .ThenInclude(g => g.Product)
-            .FirstOrDefaultAsync(x => x.UserId == userId);
-        if (cart == null)
-            cart = await CreateNewCart(userId);
-
         // add or update product
         var currentProduct = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == product.Id);
         if (currentProduct == null)
@@ -69,6 +62,14 @@ public class CartService : ICartService
         {
             _mapper.Map(product, currentProduct);
         }
+        await _dbContext.SaveChangesAsync();
+
+        var cart = await _dbContext.CartHeaders
+            .Include(c => c.CartDetails!)
+            .ThenInclude(g => g.Product)
+            .FirstOrDefaultAsync(x => x.UserId == userId);
+        if (cart == null)
+            cart = await CreateNewCart(userId);
 
         // add or update cart item
         var cartDetail = cart.CartDetails!.FirstOrDefault(x => x.ProductId == product.Id);
@@ -78,10 +79,10 @@ public class CartService : ICartService
             {
                 Id = Guid.NewGuid(),
                 Count = count,
-                ProductId = currentProduct.Id,
-                Product = currentProduct
+                Product = currentProduct,
+                CartHeader = cart
             };
-            cart.CartDetails!.Add(cartDetail);
+            _dbContext.CartDetails.Add(cartDetail);
         }
         else
         {
