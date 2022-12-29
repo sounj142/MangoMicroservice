@@ -22,10 +22,11 @@ namespace Mango.Web.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var result = await _productService.GetProducts();
-            return View(result);
+            var productsResult = await _productService.GetProducts();
+            return View(productsResult);
         }
 
         [HttpGet]

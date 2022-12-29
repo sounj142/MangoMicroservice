@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Mango.ProductAPI/products.db
+/Mango.ProductAPI/products.db-shm
+/Mango.ProductAPI/products.db-wal
+/Mango.IdentityServer/identity.db

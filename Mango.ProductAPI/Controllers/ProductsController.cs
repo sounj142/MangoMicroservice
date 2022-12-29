@@ -26,14 +26,12 @@ namespace Mango.ProductAPI.Controllers
             else return Result<T>.Failure("Product not found.");
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<Result<List<ProductDto>?>> GetProducts()
         {
             return await _productService.GetProducts();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public Task<Result<ProductDto?>> GetProduct(string id)
         {
