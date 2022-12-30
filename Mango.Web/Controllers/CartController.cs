@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Commons.Services;
 using Mango.Web.Dtos;
 using Mango.Web.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -9,18 +10,15 @@ namespace Mango.Web.Controllers;
 [Authorize]
 public class CartController : Controller
 {
-    private readonly ICurrentUserContext _userContext;
     private readonly ICartService _cartService;
     private readonly ICouponService _couponService;
     private readonly IMapper _mapper;
 
     public CartController(
-        ICurrentUserContext userContext,
         ICartService cartService,
         ICouponService couponService,
         IMapper mapper)
     {
-        _userContext = userContext;
         _cartService = cartService;
         _couponService = couponService;
         _mapper = mapper;
@@ -28,9 +26,7 @@ public class CartController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var userId = _userContext.GetCurrentUserId();
-        var cartResult = await _cartService.GetOrCreateCartByUserId(userId!);
-
+        var cartResult = await _cartService.GetOrCreateCartOfCurrentUser();
         return View(cartResult.Data);
     }
 
@@ -38,12 +34,7 @@ public class CartController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Remove([FromForm] Guid productId)
     {
-        var userId = _userContext.GetCurrentUserId();
-        await _cartService.RemoveFromCart(new RemoveFromCartDto
-        {
-            ProductId = productId,
-            UserId = userId!
-        });
+        await _cartService.RemoveFromCart(new RemoveFromCartDto { ProductId = productId });
 
         return RedirectToAction(nameof(Index));
     }
@@ -68,7 +59,6 @@ public class CartController : Controller
         var coupon = couponResult.Data!;
         var applyCouponDto = new ApplyCouponDto
         {
-            UserId = _userContext.GetCurrentUserId()!,
             CouponCode = coupon.CouponCode,
             DiscountAmount = coupon.DiscountAmount
         };
@@ -83,7 +73,6 @@ public class CartController : Controller
     {
         var applyCouponDto = new ApplyCouponDto
         {
-            UserId = _userContext.GetCurrentUserId()!,
             CouponCode = null,
             DiscountAmount = 0
         };
@@ -94,8 +83,7 @@ public class CartController : Controller
 
     public async Task<IActionResult> Checkout()
     {
-        var userId = _userContext.GetCurrentUserId();
-        var cartResult = await _cartService.GetOrCreateCartByUserId(userId!);
+        var cartResult = await _cartService.GetOrCreateCartOfCurrentUser();
         if (!cartResult.Succeeded)
         {
             TempData["ErrorMessage"] = cartResult.Messages.FirstOrDefault();

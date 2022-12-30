@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Commons;
 using Mango.ShoppingCartApi.Dtos;
+using Mango.ShoppingCartApi.Messages;
 using Mango.ShoppingCartApi.Models;
 using Mango.ShoppingCartApi.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -163,5 +164,11 @@ public class CartService : ICartService
             if (cart.FinalPrice < 0) cart.FinalPrice = 0;
             cart.ActualDiscountAmount = cart.TotalPrice - cart.FinalPrice;
         }
+    }
+
+    public async Task<Result<object?>> Checkout(CheckoutDto model)
+    {
+        //model.Cart = GetOrCreateCartByUserId()
+        return null;
     }
 }

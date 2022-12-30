@@ -1,4 +1,4 @@
-﻿namespace Mango.Web.Services;
+﻿namespace Commons.Services;
 
 public interface ICurrentUserContext
 {

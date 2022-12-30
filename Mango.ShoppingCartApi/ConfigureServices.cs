@@ -1,4 +1,5 @@
-﻿using Mango.ShoppingCartApi.Mappers;
+﻿using Commons.Services;
+using Mango.ShoppingCartApi.Mappers;
 using Mango.ShoppingCartApi.Repositories;
 using Mango.ShoppingCartApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -70,6 +71,10 @@ public class ConfigureServices
         });
 
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+
         services.AddScoped<ICartService, CartService>();
     }
 }

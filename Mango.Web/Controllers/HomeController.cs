@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Commons.Services;
 using Mango.Web.Dtos;
 using Mango.Web.Models;
 using Mango.Web.Services;
@@ -12,18 +13,15 @@ public class HomeController : Controller
 {
     private readonly IProductService _productService;
     private readonly ICartService _cartService;
-    private readonly ICurrentUserContext _currentUserContext;
     private readonly IMapper _mapper;
 
     public HomeController(
         IProductService productService,
         ICartService cartService,
-        ICurrentUserContext currentUserContext,
         IMapper mapper)
     {
         _productService = productService;
         _cartService = cartService;
-        _currentUserContext = currentUserContext;
         _mapper = mapper;
     }
 
@@ -43,9 +41,8 @@ public class HomeController : Controller
                 new { message = productResult.Messages.FirstOrDefault() });
 
         var model = _mapper.Map<ProductDetailsDto>(productResult.Data);
-        var userId = _currentUserContext.GetCurrentUserId();
 
-        var cartResult = await _cartService.GetOrCreateCartByUserId(userId!);
+        var cartResult = await _cartService.GetOrCreateCartOfCurrentUser();
         if (!cartResult.Succeeded)
             return RedirectToAction("Index", "Error",
                 new { message = cartResult.Messages.FirstOrDefault() });
@@ -70,13 +67,11 @@ public class HomeController : Controller
 
         var model = _mapper.Map<ProductDetailsDto>(productResult.Data);
         model.Count = count;
-        var userId = _currentUserContext.GetCurrentUserId();
 
         var addToCartResult = await _cartService.CreateOrUpdateCart(
             new CreateOrUpdateCart
             {
                 Count = count,
-                UserId = userId!,
                 Product = productResult.Data!
             });
         if (!addToCartResult.Succeeded)

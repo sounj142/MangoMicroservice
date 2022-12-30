@@ -18,13 +18,12 @@ public class CartService : BaseService, ICartService
         _baseUrl = $"{serviceUrls.ShoppingCartApi}/api/v1/cart";
     }
 
-    public Task<Result<CartHeaderDto?>> GetOrCreateCartByUserId(string userId)
+    public Task<Result<CartHeaderDto?>> GetOrCreateCartOfCurrentUser()
     {
         return Send<CartHeaderDto>(new ApiRequest
         {
             Method = HttpMethod.Get,
             Url = _baseUrl,
-            Params = new { userId }
         });
     }
 
@@ -48,13 +47,12 @@ public class CartService : BaseService, ICartService
         });
     }
 
-    public Task<Result<object?>> ClearCart(string userId)
+    public Task<Result<object?>> ClearCart()
     {
         return Send<object>(new ApiRequest
         {
             Method = HttpMethod.Delete,
-            Url = _baseUrl,
-            Params = new { userId }
+            Url = _baseUrl
         });
     }
 
