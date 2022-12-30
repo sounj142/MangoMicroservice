@@ -14,5 +14,6 @@ public interface ICartService
 
     Task<Result<object?>> ClearCart(string userId);
 
-    Task<Result<CartHeaderDto?>> ApplyCoupon(string userId, string? couponCode);
+    Task<Result<CartHeaderDto?>> ApplyCoupon(
+        string userId, string? couponCode, double discountAmount);
 }

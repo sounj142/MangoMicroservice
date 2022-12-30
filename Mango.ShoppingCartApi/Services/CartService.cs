@@ -27,6 +27,7 @@ public class CartService : ICartService
             UserId = userId,
             CartDetails = new List<CartDetails>()
         };
+        CalculateCartPrices(cart);
         _dbContext.CartHeaders.Add(cart);
         await _dbContext.SaveChangesAsync();
         return cart;
@@ -88,8 +89,15 @@ public class CartService : ICartService
         {
             cartDetail.Count = count;
         }
-
+        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
+
+        //cart = await _dbContext.CartHeaders
+        //    .Include(c => c.CartDetails!)
+        //    .ThenInclude(g => g.Product)
+        //    .FirstOrDefaultAsync(x => x.UserId == userId);
+        //CalculateCartPrices(cart!);
+        //await _dbContext.SaveChangesAsync();
 
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
     }
@@ -106,7 +114,7 @@ public class CartService : ICartService
         cart.CartDetails = cart.CartDetails!
             .Where(x => x.ProductId != productId)
             .ToList();
-
+        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
@@ -122,12 +130,13 @@ public class CartService : ICartService
 
         cart.CartDetails!.Clear();
         cart.CouponCode = null;
+        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<object>.Success(null);
     }
 
-    public async Task<Result<CartHeaderDto?>> ApplyCoupon(string userId, string? couponCode)
+    public async Task<Result<CartHeaderDto?>> ApplyCoupon(string userId, string? couponCode, double discountAmount)
     {
         var cart = await _dbContext.CartHeaders
             .Include(c => c.CartDetails!)
@@ -137,8 +146,26 @@ public class CartService : ICartService
             return Result<CartHeaderDto>.Failure("Cart not found.");
 
         cart.CouponCode = couponCode;
+        cart.DiscountAmount = discountAmount;
+        CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
+    }
+
+    private void CalculateCartPrices(CartHeader cart)
+    {
+        if (cart.CartDetails!.Count == 0)
+        {
+            cart.TotalPrice = 0;
+            cart.FinalPrice = 0;
+            cart.DiscountAmount = 0;
+            cart.CouponCode = null;
+        }
+        else
+        {
+            cart.TotalPrice = cart.CartDetails!.Sum(x => x.Count * x.Product!.Price);
+            cart.FinalPrice = cart.TotalPrice - cart.DiscountAmount;
+        }
     }
 }

@@ -13,5 +13,9 @@ public class CartHeader
     [MaxLength(100)]
     public string? CouponCode { get; set; }
 
+    public double TotalPrice { get; set; }
+    public double DiscountAmount { get; set; }
+    public double FinalPrice { get; set; }
+
     public IList<CartDetails>? CartDetails { get; set; }
 }

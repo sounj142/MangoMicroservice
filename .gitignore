@@ -369,3 +369,7 @@ FodyWeavers.xsd
 /Mango.IdentityServer/identity.db-wal
 /Mango.IdentityServer/identity.db-shm
 /Mango.CouponApi/coupon.db
+/Mango.CouponApi/coupon.db-wal
+/Mango.CouponApi/coupon.db-shm
+/Mango.ShoppingCartApi/shoppingcart.db-wal
+/Mango.ShoppingCartApi/shoppingcart.db-shm
