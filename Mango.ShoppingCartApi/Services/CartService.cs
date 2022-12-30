@@ -92,13 +92,6 @@ public class CartService : ICartService
         CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
 
-        //cart = await _dbContext.CartHeaders
-        //    .Include(c => c.CartDetails!)
-        //    .ThenInclude(g => g.Product)
-        //    .FirstOrDefaultAsync(x => x.UserId == userId);
-        //CalculateCartPrices(cart!);
-        //await _dbContext.SaveChangesAsync();
-
         return Result<CartHeaderDto>.Success(_mapper.Map<CartHeaderDto>(cart));
     }
 
