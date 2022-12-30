@@ -1,0 +1,47 @@
+﻿@{
+    string? errorMessage = TempData["ErrorMessage"] as string;
+    string? successMessage = TempData["SuccessMessage"] as string;
+    bool hasError = !string.IsNullOrEmpty(errorMessage);
+    bool hasSuccess = !string.IsNullOrEmpty(successMessage);
+    bool needToDisplay = hasError || hasSuccess;
+}
+
+@if (needToDisplay)
+{
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="global-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                @if (hasError)
+                {
+                    <strong class="me-auto text-danger">Error</strong>
+                }
+                else
+                {
+                    <strong class="me-auto text-success">Notification</strong>
+                }
+                
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            @if (hasError)
+            {
+                <div class="toast-body text-danger">
+                    @errorMessage
+                </div>
+            }
+            else
+            {
+                <div class="toast-body text-primary">
+                    @successMessage
+                </div>
+            }
+            
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const toast = bootstrap.Toast.getOrCreateInstance($("#global-toast"));
+            toast.show();
+        });
+    </script>
+}

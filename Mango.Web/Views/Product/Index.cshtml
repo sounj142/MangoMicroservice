@@ -70,19 +70,17 @@
 {
     <script>
         $(document).ready(function () {
-            (() => {
-                const modal = bootstrap.Modal.getOrCreateInstance($("#deleteModal"));
-                let selectedId;
-                $('.delete-button').click(function () {
-                    modal.show();
-                    selectedId = $(this).data('id');
-                });
+            const modal = bootstrap.Modal.getOrCreateInstance($("#deleteModal"));
+            let selectedId;
+            $('.delete-button').click(function () {
+                modal.show();
+                selectedId = $(this).data('id');
+            });
 
-                $('#delete-confirm-btn').click(() => {
-                    $('#delete-' + selectedId).first().submit();
-                    modal.hide();
-                });
-            })();
+            $('#delete-confirm-btn').click(() => {
+                $('#delete-' + selectedId).first().submit();
+                modal.hide();
+            });
         });
     </script>
 }

@@ -51,6 +51,7 @@ public class ProductController : Controller
             return View(model);
         }
 
+        TempData["SuccessMessage"] = "Product created successfully.";
         return RedirectToAction(nameof(Index));
     }
 
@@ -83,6 +84,7 @@ public class ProductController : Controller
             return View(model);
         }
 
+        TempData["SuccessMessage"] = "Product updated successfully.";
         return RedirectToAction(nameof(Index));
     }
 

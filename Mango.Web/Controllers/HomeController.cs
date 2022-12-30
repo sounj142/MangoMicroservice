@@ -73,7 +73,12 @@ public class HomeController : Controller
         var userId = _currentUserContext.GetCurrentUserId();
 
         var addToCartResult = await _cartService.CreateOrUpdateCart(
-            userId!, count, productResult.Data!);
+            new CreateOrUpdateCart
+            {
+                Count = count,
+                UserId = userId!,
+                Product = productResult.Data!
+            });
         if (!addToCartResult.Succeeded)
             return RedirectToAction("Index", "Error",
                 new { message = addToCartResult.Messages.FirstOrDefault() });

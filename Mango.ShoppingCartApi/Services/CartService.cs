@@ -160,12 +160,15 @@ public class CartService : ICartService
             cart.TotalPrice = 0;
             cart.FinalPrice = 0;
             cart.DiscountAmount = 0;
+            cart.ActualDiscountAmount = 0;
             cart.CouponCode = null;
         }
         else
         {
             cart.TotalPrice = cart.CartDetails!.Sum(x => x.Count * x.Product!.Price);
             cart.FinalPrice = cart.TotalPrice - cart.DiscountAmount;
+            if (cart.FinalPrice < 0) cart.FinalPrice = 0;
+            cart.ActualDiscountAmount = cart.TotalPrice - cart.FinalPrice;
         }
     }
 }

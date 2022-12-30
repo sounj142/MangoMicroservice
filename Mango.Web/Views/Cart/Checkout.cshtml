@@ -1,0 +1,141 @@
+﻿@model CheckoutDto
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<form method="post" id="checkout-form">
+    <input hidden asp-for="CouponCode" />
+    <input hidden asp-for="TotalPrice" />
+    <input hidden asp-for="DiscountAmount" />
+    <input hidden asp-for="ActualDiscountAmount" />
+    <input hidden asp-for="FinalPrice" />
+    <input hidden asp-for="TimeZoneOffset" class="form_timezoneoffset" />
+
+    <div>
+        <span style="font-size:25px;" class="text-warning">Enter details and place order :</span>
+        <br />
+    </div>
+    <div class="border mt-2">
+        <div class="container row">
+            <div class="col-7">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="col-form-label">First Name :</label>
+                        <input class="form-control" asp-for="FirstName" />
+                    </div>
+                    <div class="col-12">
+                        <label class="col-form-label">Last Name :</label>
+                        <input class="form-control" asp-for="LastName" />
+                    </div>
+                    <div class="col-12">
+                        <label class="col-form-label">Email :</label>
+                        <input class="form-control" asp-for="Email" />
+                    </div>
+                    <div class="col-12">
+                        <label class="col-form-label">Phone :</label>
+                        <input class="form-control" asp-for="Phone" />
+                    </div>
+                    <div class="col-12">
+                        <label class="col-form-label">PickUp Time</label>
+                        <input class="form-control form_datetime" type="text" asp-for="PickupDateTime" />
+                    </div>
+                    <div class="col-12">
+                        <label class="col-form-label">Card Number :</label>
+                        <input class="form-control" asp-for="CardNumber" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="col-form-label">CVV :</label>
+                        <input class="form-control" asp-for="CVV" />
+                    </div>
+
+                    <div class="col-12 pb-4">
+                        <label class="col-form-label">Expiry :</label>
+                        <input placeholder="MMYY" class="form-control" asp-for="ExpiryMonthYear" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-5">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class=" d-none d-lg-block">
+                            <div class="row text-danger">
+                                <div class="col-6">
+                                    Product Details
+                                </div>
+
+                                <div class="col-3">
+                                    Price
+                                </div>
+                                <div class="col-3">
+                                    Count
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        @foreach (var item in Model.Cart!.CartDetails)
+                        {
+                            <div class="row h-100">
+                                <div class="col-6">
+                                    <span style="font-size:20px">@item.Product!.Name</span>
+                                </div>
+
+                                <div class="col-3" style="font-size:11px;">
+                                    <span style="font-size:17px;">@item.Product!.Price.ToString("c")</span>
+                                </div>
+
+                                <div class="col-3" style="font-size:11px;">
+                                    <span style="font-size:17px;"> @item.Count</span>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+
+                        <div class="row">
+                            <div class="col-12 text-right pr-4">
+                                <span class="text-danger" style="font-size:21px;">
+                                    Order Total: @Model.FinalPrice.ToString("c") 
+                                    <br />
+                                </span>
+                                @if (Model.ActualDiscountAmount > 0)
+                                {
+                                    <span class="text-success">
+                                        Order Discount : @Model.ActualDiscountAmount.ToString("c")
+                                        <br />
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+
+                            <div class="col-12 ">
+                                <button type="submit" class="btn btn-success form-control ">
+                                    <span>Place Order</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(() => {
+            const now = new Date();
+            const elem = $("#checkout-form .form_datetime");
+            elem.val(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`);
+            elem.datetimepicker({ format: 'yyyy-mm-dd hh:ii' });
+            elem.datetimepicker('setStartDate', now);
+        });
+    </script>
+}

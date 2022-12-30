@@ -36,7 +36,7 @@ public class CartController
         return await _cartService.RemoveFromCart(model.UserId, model.ProductId);
     }
 
-    [HttpPut("apply-coupon")]
+    [HttpPost("apply-coupon")]
     public async Task<Result<CartHeaderDto?>> ApplyCoupon(ApplyCouponDto model)
     {
         return await _cartService.ApplyCoupon(model.UserId, model.CouponCode, model.DiscountAmount);

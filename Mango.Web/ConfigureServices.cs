@@ -20,6 +20,7 @@ public static class ConfigureServices
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ICartService, CartService>();
+        services.AddScoped<ICouponService, CouponService>();
 
         services.AddSingleton((provider) =>
             builder.Configuration.GetSection("ServiceUrls").Get<ServiceUrls>());

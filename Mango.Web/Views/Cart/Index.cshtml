@@ -76,16 +76,38 @@
                     <div class="col-6">
                         @if (Model.CartDetails.Count > 0)
                         {
-                            <span>Coupon:</span>
-                            <input />
-                            <button type="submit" class="btn-success"> Apply </button>
+                            if (string.IsNullOrEmpty(Model.CouponCode))
+                            {
+                                <form method="post" asp-action="ApplyCoupon">
+                                    <span>Coupon:</span>
+                                    <input value="@Model.CouponCode" name="couponCode" />
+                                    <button type="submit" class="btn-success"> Apply</button>
+                                </form>
+                            }
+                            else 
+                            {
+                                <form method="post" asp-action="RemoveCoupon">
+                                    <span>Coupon:</span>
+                                    <input value="@Model.CouponCode" disabled />
+                                    <button type="submit" class="btn-danger"> Remove</button>
+                                </form>
+                            }
                         }
                     </div>
                     <div class="col-6 text-end">
+                        
                         <span class="text-danger" style="font-size:21px;">
                             Order Total : @Model.FinalPrice.ToString("c")
                             <br />
                         </span>
+
+                        @if (Model.ActualDiscountAmount > 0)
+                        {
+                            <span class="text-success">
+                                Order Discount : @Model.ActualDiscountAmount.ToString("c")
+                                <br />
+                            </span>
+                        }
                     </div>
                 </div>
             </div>
@@ -95,8 +117,8 @@
                     <div class="col-6 col-md-3 offset-md-6">
                     </div>
                     <div class="col-6 col-md-3">
-                        <a asp-action="Checkout" class="btn btn-success form-control ">
-                            <span>Checkout</span>
+                        <a asp-action="Checkout" class="btn btn-success form-control">
+                            Checkout
                         </a>
                     </div>
                 </div>

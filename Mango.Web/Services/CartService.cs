@@ -28,32 +28,23 @@ public class CartService : BaseService, ICartService
         });
     }
 
-    public Task<Result<CartHeaderDto?>> CreateOrUpdateCart(string userId, int count, ProductDto product)
+    public Task<Result<CartHeaderDto?>> CreateOrUpdateCart(CreateOrUpdateCart dto)
     {
         return Send<CartHeaderDto>(new ApiRequest
         {
             Method = HttpMethod.Post,
             Url = _baseUrl,
-            Body = new CreateOrUpdateCart
-            {
-                UserId = userId,
-                Count = count,
-                Product = product
-            }
+            Body = dto
         });
     }
 
-    public Task<Result<CartHeaderDto?>> RemoveFromCart(string userId, Guid productId)
+    public Task<Result<CartHeaderDto?>> RemoveFromCart(RemoveFromCartDto dto)
     {
         return Send<CartHeaderDto>(new ApiRequest
         {
             Method = HttpMethod.Put,
             Url = _baseUrl,
-            Body = new RemoveFromCartDto
-            {
-                UserId = userId,
-                ProductId = productId
-            }
+            Body = dto
         });
     }
 
@@ -64,6 +55,16 @@ public class CartService : BaseService, ICartService
             Method = HttpMethod.Delete,
             Url = _baseUrl,
             Params = new { userId }
+        });
+    }
+
+    public Task<Result<CartHeaderDto?>> ApplyCoupon(ApplyCouponDto dto)
+    {
+        return Send<CartHeaderDto>(new ApiRequest
+        {
+            Method = HttpMethod.Post,
+            Url = $"{_baseUrl}/apply-coupon",
+            Body = dto
         });
     }
 }
