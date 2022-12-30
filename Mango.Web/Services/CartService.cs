@@ -18,19 +18,21 @@ public class CartService : BaseService, ICartService
         _baseUrl = $"{serviceUrls.ShoppingCartApi}/api/v1/cart";
     }
 
-    public Task<Result<CartHeaderDto?>> GetOrCreateCartByUserId(string userId)
+    public async Task<Result<CartHeaderDto?>> GetOrCreateCartByUserId(string userId)
     {
-        return Send<CartHeaderDto>(new ApiRequest
+        var result = await Send<CartHeaderDto>(new ApiRequest
         {
             Method = HttpMethod.Get,
             Url = _baseUrl,
             Params = new { userId }
         });
+        CalculateCartTotalPrice(result.Data);
+        return result;
     }
 
-    public Task<Result<CartHeaderDto?>> CreateOrUpdateCart(string userId, int count, ProductDto product)
+    public async Task<Result<CartHeaderDto?>> CreateOrUpdateCart(string userId, int count, ProductDto product)
     {
-        return Send<CartHeaderDto>(new ApiRequest
+        var result = await Send<CartHeaderDto>(new ApiRequest
         {
             Method = HttpMethod.Post,
             Url = _baseUrl,
@@ -41,11 +43,13 @@ public class CartService : BaseService, ICartService
                 Product = product
             }
         });
+        CalculateCartTotalPrice(result.Data);
+        return result;
     }
 
-    public Task<Result<CartHeaderDto?>> RemoveFromCart(string userId, Guid productId)
+    public async Task<Result<CartHeaderDto?>> RemoveFromCart(string userId, Guid productId)
     {
-        return Send<CartHeaderDto>(new ApiRequest
+        var result = await Send<CartHeaderDto>(new ApiRequest
         {
             Method = HttpMethod.Put,
             Url = _baseUrl,
@@ -55,6 +59,8 @@ public class CartService : BaseService, ICartService
                 ProductId = productId
             }
         });
+        CalculateCartTotalPrice(result.Data);
+        return result;
     }
 
     public Task<Result<object?>> ClearCart(string userId)
@@ -65,5 +71,12 @@ public class CartService : BaseService, ICartService
             Url = _baseUrl,
             Params = new { userId }
         });
+    }
+
+    private void CalculateCartTotalPrice(CartHeaderDto? cart)
+    {
+        if (cart == null) return;
+        cart.TotalPrice = cart.CartDetails.Sum(item => item.Count * item.Product!.Price);
+        cart.FinalPrice = cart.TotalPrice;
     }
 }

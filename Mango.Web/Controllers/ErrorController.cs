@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Mango.Web.Controllers
+namespace Mango.Web.Controllers;
+
+public class ErrorController : Controller
 {
-    public class ErrorController : Controller
+    public IActionResult Index([FromQuery] string message)
     {
-        public IActionResult Index([FromQuery] string message)
-        {
-            return View((object)message);
-        }
+        return View((object)message);
     }
 }
