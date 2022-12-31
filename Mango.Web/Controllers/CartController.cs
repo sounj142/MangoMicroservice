@@ -81,6 +81,7 @@ public class CartController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpGet]
     public async Task<IActionResult> Checkout()
     {
         var cartResult = await _cartService.GetOrCreateCartOfCurrentUser();
@@ -94,7 +95,7 @@ public class CartController : Controller
             TempData["ErrorMessage"] = "You can't checkout because your cart is empty.";
             return RedirectToAction(nameof(Index));
         }
-        var order = new CheckoutDto
+        var checkout = new CheckoutDto
         {
             Cart = cartResult.Data,
             CouponCode = cartResult.Data.CouponCode,
@@ -104,6 +105,37 @@ public class CartController : Controller
             FinalPrice = cartResult.Data.FinalPrice,
         };
 
-        return View(order);
+        return View(checkout);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Checkout(CheckoutDto checkout)
+    {
+        var cartResult = await _cartService.GetOrCreateCartOfCurrentUser();
+        if (!cartResult.Succeeded)
+        {
+            TempData["ErrorMessage"] = cartResult.Messages.FirstOrDefault();
+            return RedirectToAction("Index", "Home");
+        }
+        if (cartResult.Data == null || cartResult.Data.CartDetails.Count == 0)
+        {
+            TempData["ErrorMessage"] = "You can't checkout because your cart is empty.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        checkout.Cart = cartResult.Data;
+        var checkoutResult = await _cartService.Checkout(checkout);
+        if (!checkoutResult.Succeeded)
+        {
+            TempData["ErrorMessage"] = checkoutResult.Messages.FirstOrDefault();
+            return RedirectToAction(nameof(Index));
+        }
+
+        return RedirectToAction(nameof(Confirmation));
+    }
+
+    public IActionResult Confirmation()
+    {
+        return View();
     }
 }

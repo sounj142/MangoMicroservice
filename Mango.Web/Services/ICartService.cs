@@ -14,4 +14,6 @@ public interface ICartService
     Task<Result<object?>> ClearCart();
 
     Task<Result<CartHeaderDto?>> ApplyCoupon(ApplyCouponDto dto);
+
+    Task<Result<object?>> Checkout(CheckoutDto model);
 }

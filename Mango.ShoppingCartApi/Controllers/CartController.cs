@@ -60,6 +60,6 @@ public class CartController
     [HttpPost("checkout")]
     public async Task<Result<object?>> Checkout(CheckoutDto model)
     {
-        return await _cartService.Checkout(model);
+        return await _cartService.Checkout(_currentUserContext.GetCurrentUserId()!, model);
     }
 }

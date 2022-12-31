@@ -18,5 +18,5 @@ public interface ICartService
     Task<Result<CartHeaderDto?>> ApplyCoupon(
         string userId, string? couponCode, double discountAmount);
 
-    Task<Result<object?>> Checkout(CheckoutDto model);
+    Task<Result<object?>> Checkout(string userId, CheckoutDto model);
 }

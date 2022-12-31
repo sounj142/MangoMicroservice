@@ -65,4 +65,14 @@ public class CartService : BaseService, ICartService
             Body = dto
         });
     }
+
+    public Task<Result<object?>> Checkout(CheckoutDto model)
+    {
+        return Send<object>(new ApiRequest
+        {
+            Method = HttpMethod.Post,
+            Url = $"{_baseUrl}/checkout",
+            Body = model
+        });
+    }
 }

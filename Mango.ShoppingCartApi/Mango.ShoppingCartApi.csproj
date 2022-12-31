@@ -20,5 +20,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Commons\Commons.csproj" />
+		<ProjectReference Include="..\Mango.MessageBus\Mango.MessageBus.csproj" />
 	</ItemGroup>
 </Project>

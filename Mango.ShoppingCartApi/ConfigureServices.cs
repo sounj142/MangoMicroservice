@@ -1,9 +1,13 @@
-﻿using Commons.Services;
+﻿using Azure.Messaging.ServiceBus;
+using Commons.Services;
+using Mango.MessageBus;
 using Mango.ShoppingCartApi.Mappers;
+using Mango.ShoppingCartApi.Models;
 using Mango.ShoppingCartApi.Repositories;
 using Mango.ShoppingCartApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -74,6 +78,12 @@ public class ConfigureServices
 
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+
+        services.AddSingleton(provider => new ServiceBusClient(
+            builder.Configuration["AzureServiceBus:ConnectionString"]));
+        services.AddSingleton(provider => new CheckoutMessageTopicMessageBus(
+            provider.GetRequiredService<ServiceBusClient>(),
+            builder.Configuration["AzureServiceBus:CheckoutMessageTopic"]));
 
         services.AddScoped<ICartService, CartService>();
     }

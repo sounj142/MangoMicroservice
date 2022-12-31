@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Commons;
+using Mango.MessageBus;
 using Mango.ShoppingCartApi.Dtos;
 using Mango.ShoppingCartApi.Messages;
 using Mango.ShoppingCartApi.Models;
@@ -13,11 +14,16 @@ public class CartService : ICartService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly CheckoutMessageTopicMessageBus _checkoutMessageBus;
 
-    public CartService(ApplicationDbContext dbContext, IMapper mapper)
+    public CartService(
+        ApplicationDbContext dbContext,
+        IMapper mapper,
+        CheckoutMessageTopicMessageBus checkoutMessageBus)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _checkoutMessageBus = checkoutMessageBus;
     }
 
     private async Task<CartHeader> CreateNewCart(string userId)
@@ -166,9 +172,25 @@ public class CartService : ICartService
         }
     }
 
-    public async Task<Result<object?>> Checkout(CheckoutDto model)
+    public async Task<Result<object?>> Checkout(string userId, CheckoutDto model)
     {
-        //model.Cart = GetOrCreateCartByUserId()
-        return null;
+        var cartResult = await GetOrCreateCartByUserId(userId);
+        if (!cartResult.Succeeded) return cartResult.CloneFailResult<object>();
+
+        model.Cart = cartResult.Data;
+        // validate checkout data and newest cart data
+        if (model.CouponCode != model.Cart!.CouponCode ||
+            model.TotalPrice != model.Cart!.TotalPrice ||
+            model.DiscountAmount != model.Cart!.DiscountAmount ||
+            model.ActualDiscountAmount != model.Cart!.ActualDiscountAmount ||
+            model.FinalPrice != model.Cart!.FinalPrice)
+            return Result<object>.Failure("Your cart has been changed. Please check it again.");
+
+        // send message
+        await _checkoutMessageBus.PublishMessage(model);
+
+        // clear cart
+
+        return Result<object>.Success(null);
     }
 }

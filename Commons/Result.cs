@@ -25,4 +25,17 @@ public class Result<T>
 
     public static Result<T?> Failure(string message, string? errorCode = null)
         => new Result<T?>(false, default, message, errorCode);
+
+    public Result<Q?> CloneFailResult<Q>()
+    {
+        if (Succeeded)
+            throw new MangoException("Use CloneFailResult() to clone fail result only.");
+        return new Result<Q?>
+        {
+            Data = default,
+            Messages = Messages,
+            ErrorCode = ErrorCode,
+            Succeeded = Succeeded
+        };
+    }
 }
