@@ -3,9 +3,9 @@ using Mango.MessageBus;
 
 namespace Mango.ShoppingCartApi.Services;
 
-public class CheckoutMessageTopicMessageBus : AzureMessageBus
+public class CheckoutMessageBusSender : AzureMessageBusSender
 {
-    public CheckoutMessageTopicMessageBus(ServiceBusClient client, string topicName)
+    public CheckoutMessageBusSender(ServiceBusClient client, string topicName)
         : base(client, topicName)
     {
     }

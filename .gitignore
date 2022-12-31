@@ -373,3 +373,6 @@ FodyWeavers.xsd
 /Mango.CouponApi/coupon.db-shm
 /Mango.ShoppingCartApi/shoppingcart.db-wal
 /Mango.ShoppingCartApi/shoppingcart.db-shm
+/Mango.OrderApi/order.db-wal
+/Mango.OrderApi/order.db-shm
+/Mango.OrderApi/order.db

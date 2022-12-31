@@ -1,7 +1,6 @@
 ﻿using Commons;
 using Commons.Services;
 using Mango.ShoppingCartApi.Dtos;
-using Mango.ShoppingCartApi.Messages;
 using Mango.ShoppingCartApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

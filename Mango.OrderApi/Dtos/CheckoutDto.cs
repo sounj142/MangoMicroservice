@@ -1,6 +1,4 @@
-﻿using Mango.ShoppingCartApi.Dtos;
-
-namespace Mango.ShoppingCartApi.Messages;
+﻿namespace Mango.OrderApi.Dtos;
 
 public class CheckoutDto
 {

@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using Commons;
 using Mango.MessageBus;
 using Mango.ShoppingCartApi.Dtos;
-using Mango.ShoppingCartApi.Messages;
 using Mango.ShoppingCartApi.Models;
 using Mango.ShoppingCartApi.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +13,12 @@ public class CartService : ICartService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
-    private readonly CheckoutMessageTopicMessageBus _checkoutMessageBus;
+    private readonly CheckoutMessageBusSender _checkoutMessageBus;
 
     public CartService(
         ApplicationDbContext dbContext,
         IMapper mapper,
-        CheckoutMessageTopicMessageBus checkoutMessageBus)
+        CheckoutMessageBusSender checkoutMessageBus)
     {
         _dbContext = dbContext;
         _mapper = mapper;

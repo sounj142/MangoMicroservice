@@ -1,6 +1,5 @@
 ﻿using Commons;
 using Mango.ShoppingCartApi.Dtos;
-using Mango.ShoppingCartApi.Messages;
 
 namespace Mango.ShoppingCartApi.Services;
 
