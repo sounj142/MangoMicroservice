@@ -15,7 +15,7 @@ public class CartService : BaseService, ICartService
         ILogger<BaseService> logger)
         : base(httpClientFactory, httpContextAccessor, logger)
     {
-        _baseUrl = $"{serviceUrls.ShoppingCartApi}/api/v1/cart";
+        _baseUrl = $"{serviceUrls.Gateway}/api/v1/cart";
     }
 
     public Task<Result<CartHeaderDto?>> GetOrCreateCartOfCurrentUser()

@@ -15,7 +15,7 @@ public class CategoryService : BaseService, ICategoryService
         ILogger<BaseService> logger)
         : base(httpClientFactory, httpContextAccessor, logger)
     {
-        _baseUrl = $"{serviceUrls.ProductApi}/api/v1/categories";
+        _baseUrl = $"{serviceUrls.Gateway}/api/v1/categories";
     }
 
     public Task<Result<List<CategoryDto>?>> GetCategories()

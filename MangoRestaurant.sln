@@ -23,15 +23,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.MessageBus", "Mango.MessageBus\Mango.MessageBus.csproj", "{A5F4E491-86E1-45A2-8990-BED05AD0CF43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.OrderApi", "Mango.OrderApi\Mango.OrderApi.csproj", "{22FFE4F0-6F22-4D17-8771-A07849B26453}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.OrderApi", "Mango.OrderApi\Mango.OrderApi.csproj", "{22FFE4F0-6F22-4D17-8771-A07849B26453}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{AAB78DED-26D6-4E00-B513-BADBF39ADA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentProcessor", "PaymentProcessor\PaymentProcessor.csproj", "{CD0E3027-0D6F-4A1D-BD78-3FC4B7FEA3FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentProcessor", "PaymentProcessor\PaymentProcessor.csproj", "{CD0E3027-0D6F-4A1D-BD78-3FC4B7FEA3FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.PaymentApi", "Mango.PaymentApi\Mango.PaymentApi.csproj", "{F2C0DAE5-CB69-4C95-87C2-358FE84CB1A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.PaymentApi", "Mango.PaymentApi\Mango.PaymentApi.csproj", "{F2C0DAE5-CB69-4C95-87C2-358FE84CB1A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.EmailSender", "Mango.EmailSender\Mango.EmailSender.csproj", "{99F5A211-823E-485A-9876-F9F94CEBFAF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mango.EmailSender", "Mango.EmailSender\Mango.EmailSender.csproj", "{99F5A211-823E-485A-9876-F9F94CEBFAF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{C4E60FC5-EAB0-4020-8D77-8499CC6B54D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mango.Gateway", "Mango.Gateway\Mango.Gateway.csproj", "{C139408A-60A3-4D7E-A301-7FFD5FEF9C8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,10 @@ Global
 		{99F5A211-823E-485A-9876-F9F94CEBFAF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99F5A211-823E-485A-9876-F9F94CEBFAF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99F5A211-823E-485A-9876-F9F94CEBFAF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C139408A-60A3-4D7E-A301-7FFD5FEF9C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C139408A-60A3-4D7E-A301-7FFD5FEF9C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C139408A-60A3-4D7E-A301-7FFD5FEF9C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C139408A-60A3-4D7E-A301-7FFD5FEF9C8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +106,7 @@ Global
 		{CD0E3027-0D6F-4A1D-BD78-3FC4B7FEA3FE} = {AAB78DED-26D6-4E00-B513-BADBF39ADA7E}
 		{F2C0DAE5-CB69-4C95-87C2-358FE84CB1A1} = {BE59DE4A-9A8E-4377-80FE-D7490A22EE21}
 		{99F5A211-823E-485A-9876-F9F94CEBFAF8} = {BE59DE4A-9A8E-4377-80FE-D7490A22EE21}
+		{C139408A-60A3-4D7E-A301-7FFD5FEF9C8B} = {C4E60FC5-EAB0-4020-8D77-8499CC6B54D2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {959F5FD2-AF4C-4349-A36E-6A8CF3EEF87E}

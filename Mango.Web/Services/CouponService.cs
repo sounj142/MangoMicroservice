@@ -15,7 +15,7 @@ public class CouponService : BaseService, ICouponService
         ILogger<BaseService> logger)
         : base(httpClientFactory, httpContextAccessor, logger)
     {
-        _baseUrl = $"{serviceUrls.CouponApi}/api/v1/coupon";
+        _baseUrl = $"{serviceUrls.Gateway}/api/v1/coupon";
     }
 
     public Task<Result<CouponDto?>> GetCoupon(string couponCode)

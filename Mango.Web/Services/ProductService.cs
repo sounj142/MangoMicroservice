@@ -15,7 +15,7 @@ public class ProductService : BaseService, IProductService
         ILogger<BaseService> logger)
         : base(httpClientFactory, httpContextAccessor, logger)
     {
-        _baseUrl = $"{serviceUrls.ProductApi}/api/v1/products";
+        _baseUrl = $"{serviceUrls.Gateway}/api/v1/products";
     }
 
     public Task<Result<List<ProductDto>?>> GetProducts()

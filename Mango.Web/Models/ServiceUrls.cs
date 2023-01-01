@@ -2,7 +2,5 @@
 
 public class ServiceUrls
 {
-    public string ProductApi { get; set; } = string.Empty;
-    public string ShoppingCartApi { get; set; } = string.Empty;
-    public string CouponApi { get; set; } = string.Empty;
+    public string Gateway { get; set; } = string.Empty;
 }
