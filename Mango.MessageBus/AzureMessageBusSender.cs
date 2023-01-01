@@ -13,7 +13,7 @@ public class AzureMessageBusSender : IAsyncDisposable
         _sender = client.CreateSender(topicName);
     }
 
-    public async Task PublishMessage<T>(T message) where T : class
+    protected async Task PublishMessage<T>(T message) where T : class
     {
         var textMessage = JsonSerializer.Serialize(message);
 

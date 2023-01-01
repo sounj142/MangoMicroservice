@@ -74,15 +74,30 @@ public class ConfigureServices
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
         services.AddHttpContextAccessor();
-        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+        ConfigureAzureServiceBus(builder);
 
+        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+        services.AddScoped<IOrderService, OrderService>();
+    }
+
+    private static void ConfigureAzureServiceBus(WebApplicationBuilder builder)
+    {
+        var services = builder.Services;
         services.AddSingleton(provider => new ServiceBusClient(
-            builder.Configuration["AzureServiceBus:ConnectionString"]));
+                    builder.Configuration["AzureServiceBus:ConnectionString"]));
+
         services.AddSingleton(provider => new CheckoutMessageBusReceiver(
             provider,
             builder.Configuration["AzureServiceBus:CheckoutMessageTopic"],
-            builder.Configuration["AzureServiceBus:CheckoutSubscriptionName"]));
+            builder.Configuration["AzureServiceBus:OrderApiSubscriptionName"]));
 
-        services.AddScoped<IOrderService, OrderService>();
+        services.AddSingleton(provider => new OrderPaymentProcessServiceBusSender(
+            provider.GetRequiredService<ServiceBusClient>(),
+            builder.Configuration["AzureServiceBus:OrderPaymentProcessTopic"]));
+
+        services.AddSingleton(provider => new OrderPaymentStatusUpdatedServiceBusReceiver(
+            provider,
+            builder.Configuration["AzureServiceBus:OrderPaymentStatusUpdatedTopic"],
+            builder.Configuration["AzureServiceBus:OrderApiSubscriptionName"]));
     }
 }

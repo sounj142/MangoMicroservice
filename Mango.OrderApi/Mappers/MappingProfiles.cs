@@ -20,5 +20,9 @@ public class MappingProfiles : Profile
         CreateMap<CartHeaderDto, OrderHeader>()
             .ForMember(x => x.Id, opt => opt.Ignore())
             .ForMember(x => x.OrderDetails, opt => opt.MapFrom(s => s.CartDetails));
+
+        CreateMap<OrderHeader, PaymentRequestDto>()
+            .ForMember(x => x.OrderId, opt => opt.MapFrom(s => s.Id))
+            .ForMember(x => x.Amount, opt => opt.MapFrom(s => s.FinalPrice));
     }
 }

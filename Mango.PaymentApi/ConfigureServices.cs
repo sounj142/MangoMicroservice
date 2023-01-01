@@ -1,25 +1,23 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Commons.Services;
-using Mango.ShoppingCartApi.Mappers;
-using Mango.ShoppingCartApi.Repositories;
-using Mango.ShoppingCartApi.Services;
+using Mango.PaymentApi.Mappers;
+using Mango.PaymentApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PaymentProcessor;
 
-namespace Mango.ShoppingCartApi;
+namespace Mango.PaymentApi;
 
 public class ConfigureServices
 {
     public static void Config(WebApplicationBuilder builder)
     {
         var services = builder.Services;
-        services.AddDbContext<ApplicationDbContext>(
-            options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+        //services.AddDbContext<ApplicationDbContext>(
+        //    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
         services.AddControllers();
-
-        services.AddHttpClient();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
@@ -76,12 +74,11 @@ public class ConfigureServices
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
         services.AddHttpContextAccessor();
-        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 
         ConfigureAzureServiceBus(builder);
 
-        services.AddScoped<ICartService, CartService>();
-        services.AddScoped<ICouponService, CouponService>();
+        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+        services.AddScoped<IProcessPayment, ProcessPayment>();
     }
 
     private static void ConfigureAzureServiceBus(WebApplicationBuilder builder)
@@ -90,8 +87,12 @@ public class ConfigureServices
 
         services.AddSingleton(provider => new ServiceBusClient(
             builder.Configuration["AzureServiceBus:ConnectionString"]));
-        services.AddSingleton(provider => new CheckoutMessageBusSender(
+        services.AddSingleton(provider => new OrderPaymentProcessReceiver(
+            provider,
+            builder.Configuration["AzureServiceBus:OrderPaymentProcessTopic"],
+            builder.Configuration["AzureServiceBus:PaymentSubscriptionName"]));
+        services.AddSingleton(provider => new OrderPaymentStatusUpdatedServiceBusSender(
             provider.GetRequiredService<ServiceBusClient>(),
-            builder.Configuration["AzureServiceBus:CheckoutMessageTopic"]));
+            builder.Configuration["AzureServiceBus:OrderPaymentStatusUpdatedTopic"]));
     }
 }

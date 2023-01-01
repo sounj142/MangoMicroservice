@@ -1,5 +1,5 @@
-using Mango.OrderApi;
-using Mango.OrderApi.Services;
+using Mango.PaymentApi;
+using Mango.PaymentApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +8,8 @@ ConfigureServices.Config(builder);
 
 var app = builder.Build();
 
-await using var checkoutReceiver = app.Services.GetRequiredService<CheckoutMessageBusReceiver>();
-await using var paymentStatusReceiver = app.Services.GetRequiredService<OrderPaymentStatusUpdatedServiceBusReceiver>();
-await checkoutReceiver.Subscribe();
-await paymentStatusReceiver.Subscribe();
+await using var receiver = app.Services.GetRequiredService<OrderPaymentProcessReceiver>();
+await receiver.Subscribe();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

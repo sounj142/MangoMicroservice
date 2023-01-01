@@ -7,5 +7,5 @@ public interface IOrderService
 {
     Task<Result<object?>> CreateOrder(CheckoutDto checkout);
 
-    Task<Result<object?>> CreateOrder(Guid orderHeaderId, bool paid);
+    Task<Result<object?>> UpdateOrderPaymentStatus(Guid orderHeaderId, bool paid);
 }
