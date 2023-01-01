@@ -193,13 +193,17 @@ public class CartService : ICartService
             var couponResult = await _couponService.GetCoupon(model.CouponCode);
             if (!couponResult.Succeeded
                 || couponResult.Data!.DiscountAmount != model.DiscountAmount)
-                return Result<object>.Failure("The coupon has been changed. Please remove it and try again.");
+            {
+                await ApplyCoupon(userId, null, 0);
+                return Result<object>.Failure("The coupon has been changed. Please try again.");
+            }
         }
 
         // send message
         await _checkoutMessageBus.PublishMessage(model);
 
         // clear cart
+        await ClearCart(userId);
 
         return Result<object>.Success(null);
     }
