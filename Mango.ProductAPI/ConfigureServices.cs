@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Azure.Messaging.ServiceBus;
 
 namespace Mango.ProductAPI;
 
@@ -70,7 +71,21 @@ public static class ConfigureServices
         });
 
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+        ConfigureAzureServiceBus(builder);
+
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
+    }
+
+    private static void ConfigureAzureServiceBus(WebApplicationBuilder builder)
+    {
+        var services = builder.Services;
+
+        services.AddSingleton(provider => new ServiceBusClient(
+            builder.Configuration["AzureServiceBus:ConnectionString"]));
+
+        services.AddSingleton(provider => new ProductSavedBusSender(
+            provider.GetRequiredService<ServiceBusClient>(),
+            builder.Configuration["AzureServiceBus:ProductSavedTopic"]));
     }
 }

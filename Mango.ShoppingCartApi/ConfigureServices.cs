@@ -74,14 +74,13 @@ public class ConfigureServices
         });
 
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-
         services.AddHttpContextAccessor();
-        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
-
         ConfigureAzureServiceBus(builder);
 
+        services.AddScoped<ICurrentUserContext, CurrentUserContext>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<ICouponService, CouponService>();
+        services.AddScoped<IProductService, ProductService>();
     }
 
     private static void ConfigureAzureServiceBus(WebApplicationBuilder builder)
@@ -90,8 +89,14 @@ public class ConfigureServices
 
         services.AddSingleton(provider => new ServiceBusClient(
             builder.Configuration["AzureServiceBus:ConnectionString"]));
+
         services.AddSingleton(provider => new CheckoutMessageBusSender(
             provider.GetRequiredService<ServiceBusClient>(),
             builder.Configuration["AzureServiceBus:CheckoutMessageTopic"]));
+
+        services.AddSingleton(provider => new ProductSavedServiceBusReceiver(
+            provider,
+            builder.Configuration["AzureServiceBus:ProductSavedTopic"],
+            builder.Configuration["AzureServiceBus:ShoppingCartSubscriptionName"]));
     }
 }

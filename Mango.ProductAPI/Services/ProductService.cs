@@ -11,11 +11,16 @@ namespace Mango.ProductAPI.Services;
 public class ProductService : IProductService
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly ProductSavedBusSender _productSavedBusSender;
     private readonly IMapper _mapper;
 
-    public ProductService(ApplicationDbContext dbContext, IMapper mapper)
+    public ProductService(
+        ApplicationDbContext dbContext,
+        ProductSavedBusSender productSavedBusSender,
+        IMapper mapper)
     {
         _dbContext = dbContext;
+        _productSavedBusSender = productSavedBusSender;
         _mapper = mapper;
     }
 
@@ -50,6 +55,10 @@ public class ProductService : IProductService
         _dbContext.Products.Add(newProduct);
 
         await _dbContext.SaveChangesAsync();
+
+        var message = _mapper.Map<ProductDto>(newProduct);
+        await _productSavedBusSender.PublishMessage(message);
+
         return Result<ProductDto>.Success(_mapper.Map<ProductDto>(newProduct));
     }
 
@@ -69,6 +78,10 @@ public class ProductService : IProductService
         currentProduct.Category = category;
 
         await _dbContext.SaveChangesAsync();
+
+        var message = _mapper.Map<ProductDto>(currentProduct);
+        await _productSavedBusSender.PublishMessage(message);
+
         return Result<ProductDto>.Success(_mapper.Map<ProductDto>(currentProduct));
     }
 

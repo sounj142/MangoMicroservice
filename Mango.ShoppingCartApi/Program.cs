@@ -1,4 +1,5 @@
 using Mango.ShoppingCartApi;
+using Mango.ShoppingCartApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigureServices.Config(builder);
 
 var app = builder.Build();
+
+await using var productSavedReceiver = app.Services.GetRequiredService<ProductSavedServiceBusReceiver>();
+await productSavedReceiver.Subscribe();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
