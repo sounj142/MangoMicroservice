@@ -1,21 +1,21 @@
 ﻿using Azure.Messaging.ServiceBus;
+using Mango.EmailSender.Dtos;
 using Mango.MessageBus;
-using Mango.OrderApi.Dtos;
 using System.Text.Json;
 
-namespace Mango.OrderApi.Services;
+namespace Mango.EmailSender.Services;
 
-public class CheckoutMessageBusReceiver : AzureMessageBusReceiver
+public class OrderPaymentStatusUpdatedServiceBusReceiver : AzureMessageBusReceiver
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public CheckoutMessageBusReceiver(
+    public OrderPaymentStatusUpdatedServiceBusReceiver(
         IServiceProvider serviceProvider,
         string topicName,
         string subscriptionName
         )
         : base(
-            serviceProvider.GetRequiredService<ILogger<CheckoutMessageBusReceiver>>(),
+            serviceProvider.GetRequiredService<ILogger<OrderPaymentStatusUpdatedServiceBusReceiver>>(),
             serviceProvider.GetRequiredService<ServiceBusClient>(),
             topicName, subscriptionName)
     {
@@ -26,10 +26,10 @@ public class CheckoutMessageBusReceiver : AzureMessageBusReceiver
     protected override async Task MessageHandler(ProcessMessageEventArgs args)
     {
         using var scope = _serviceProvider.CreateScope();
-        var repository = scope.ServiceProvider.GetRequiredService<IOrderService>();
+        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
 
-        var checkout = JsonSerializer.Deserialize<CheckoutDto>(args.Message.Body.ToString());
-        await repository.CreateOrder(checkout!);
+        var paymentResponse = JsonSerializer.Deserialize<PaymentResponseDto>(args.Message.Body.ToString());
+        await emailService.SendEmail(paymentResponse!);
 
         // complete the message. messages is deleted from the subscription.
         await args.CompleteMessageAsync(args.Message);

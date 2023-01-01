@@ -13,18 +13,18 @@ public class CartService : ICartService
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
     private readonly ICouponService _couponService;
-    private readonly CheckoutMessageBusSender _checkoutMessageBus;
+    private readonly CheckoutQueueSender _checkoutQueueSender;
 
     public CartService(
         ApplicationDbContext dbContext,
         IMapper mapper,
         ICouponService couponService,
-        CheckoutMessageBusSender checkoutMessageBus)
+        CheckoutQueueSender checkoutQueueSender)
     {
         _dbContext = dbContext;
         _mapper = mapper;
         _couponService = couponService;
-        _checkoutMessageBus = checkoutMessageBus;
+        _checkoutQueueSender = checkoutQueueSender;
     }
 
     private async Task<CartHeader> CreateNewCart(string userId)
@@ -200,7 +200,7 @@ public class CartService : ICartService
         }
 
         // send message
-        await _checkoutMessageBus.PublishMessage(model);
+        await _checkoutQueueSender.PublishMessage(model);
 
         // clear cart
         await ClearCart(userId);

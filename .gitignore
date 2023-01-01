@@ -376,3 +376,6 @@ FodyWeavers.xsd
 /Mango.OrderApi/order.db-wal
 /Mango.OrderApi/order.db-shm
 /Mango.OrderApi/order.db
+/Mango.EmailSender/email.db-wal
+/Mango.EmailSender/email.db-shm
+/Mango.EmailSender/email.db

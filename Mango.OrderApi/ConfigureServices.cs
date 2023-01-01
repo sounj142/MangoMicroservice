@@ -86,10 +86,9 @@ public class ConfigureServices
         services.AddSingleton(provider => new ServiceBusClient(
                     builder.Configuration["AzureServiceBus:ConnectionString"]));
 
-        services.AddSingleton(provider => new CheckoutMessageBusReceiver(
+        services.AddSingleton(provider => new CheckoutQueueReceiver(
             provider,
-            builder.Configuration["AzureServiceBus:CheckoutMessageTopic"],
-            builder.Configuration["AzureServiceBus:OrderApiSubscriptionName"]));
+            builder.Configuration["AzureServiceBus:CheckoutQueue"]));
 
         services.AddSingleton(provider => new OrderPaymentProcessServiceBusSender(
             provider.GetRequiredService<ServiceBusClient>(),

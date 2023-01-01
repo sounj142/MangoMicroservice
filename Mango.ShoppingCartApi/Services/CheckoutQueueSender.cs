@@ -4,9 +4,9 @@ using Mango.ShoppingCartApi.Dtos;
 
 namespace Mango.ShoppingCartApi.Services;
 
-public class CheckoutMessageBusSender : AzureMessageBusSender
+public class CheckoutQueueSender : AzureMessageBusSender
 {
-    public CheckoutMessageBusSender(ServiceBusClient client, string topicName)
+    public CheckoutQueueSender(ServiceBusClient client, string topicName)
         : base(client, topicName)
     {
     }

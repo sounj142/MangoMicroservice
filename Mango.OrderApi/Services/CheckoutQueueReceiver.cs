@@ -5,19 +5,19 @@ using System.Text.Json;
 
 namespace Mango.OrderApi.Services;
 
-public class OrderPaymentStatusUpdatedServiceBusReceiver : AzureMessageBusReceiver
+public class CheckoutQueueReceiver : AzureMessageBusReceiver
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public OrderPaymentStatusUpdatedServiceBusReceiver(
+    public CheckoutQueueReceiver(
         IServiceProvider serviceProvider,
-        string topicName,
-        string subscriptionName
+        string queueName
         )
         : base(
-            serviceProvider.GetRequiredService<ILogger<OrderPaymentStatusUpdatedServiceBusReceiver>>(),
+            serviceProvider.GetRequiredService<ILogger<CheckoutQueueReceiver>>(),
             serviceProvider.GetRequiredService<ServiceBusClient>(),
-            topicName, subscriptionName)
+            queueName,
+            null)
     {
         _serviceProvider = serviceProvider;
     }
@@ -26,10 +26,10 @@ public class OrderPaymentStatusUpdatedServiceBusReceiver : AzureMessageBusReceiv
     protected override async Task MessageHandler(ProcessMessageEventArgs args)
     {
         using var scope = _serviceProvider.CreateScope();
-        var orderService = scope.ServiceProvider.GetRequiredService<IOrderService>();
+        var repository = scope.ServiceProvider.GetRequiredService<IOrderService>();
 
-        var paymentResponse = JsonSerializer.Deserialize<PaymentResponseDto>(args.Message.Body.ToString());
-        await orderService.UpdateOrderPaymentStatus(paymentResponse!.OrderId, paymentResponse.Paid);
+        var checkout = JsonSerializer.Deserialize<CheckoutDto>(args.Message.Body.ToString());
+        await repository.CreateOrder(checkout!);
 
         // complete the message. messages is deleted from the subscription.
         await args.CompleteMessageAsync(args.Message);

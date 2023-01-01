@@ -11,11 +11,13 @@ public abstract class AzureMessageBusReceiver : IAsyncDisposable
     public AzureMessageBusReceiver(
         ILogger<AzureMessageBusReceiver> logger,
         ServiceBusClient client,
-        string topicName,
-        string subscriptionName)
+        string topicOrQueueName,
+        string? subscriptionName)
     {
         _logger = logger;
-        _processor = client.CreateProcessor(topicName, subscriptionName, new ServiceBusProcessorOptions());
+        _processor = string.IsNullOrEmpty(subscriptionName)
+            ? client.CreateProcessor(topicOrQueueName)
+            : client.CreateProcessor(topicOrQueueName, subscriptionName);
     }
 
     public async Task Subscribe()

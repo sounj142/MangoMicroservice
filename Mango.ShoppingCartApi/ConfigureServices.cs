@@ -90,9 +90,9 @@ public class ConfigureServices
         services.AddSingleton(provider => new ServiceBusClient(
             builder.Configuration["AzureServiceBus:ConnectionString"]));
 
-        services.AddSingleton(provider => new CheckoutMessageBusSender(
+        services.AddSingleton(provider => new CheckoutQueueSender(
             provider.GetRequiredService<ServiceBusClient>(),
-            builder.Configuration["AzureServiceBus:CheckoutMessageTopic"]));
+            builder.Configuration["AzureServiceBus:CheckoutQueue"]));
 
         services.AddSingleton(provider => new ProductSavedServiceBusReceiver(
             provider,

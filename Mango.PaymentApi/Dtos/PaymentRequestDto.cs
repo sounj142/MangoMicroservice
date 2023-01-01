@@ -11,4 +11,6 @@ public class PaymentRequestDto
     public string? ExpiryMonthYear { get; set; }
 
     public decimal Amount { get; set; }
+
+    public string? Email { get; set; }
 }

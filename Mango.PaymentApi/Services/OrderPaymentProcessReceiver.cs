@@ -42,6 +42,9 @@ public class OrderPaymentProcessReceiver : AzureMessageBusReceiver
         {
             OrderId = paymentRequest!.OrderId,
             Paid = isPaid,
+            Email = paymentRequest.Email,
+            FirstName = paymentRequest.FirstName,
+            LastName = paymentRequest.LastName,
         };
         await paymentStatusUpdatedSender.PublishMessage(paymentResponse);
 
