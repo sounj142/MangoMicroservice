@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Commons;
-using Mango.MessageBus;
 using Mango.ShoppingCartApi.Dtos;
 using Mango.ShoppingCartApi.Models;
 using Mango.ShoppingCartApi.Repositories;
@@ -13,15 +12,18 @@ public class CartService : ICartService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ICouponService _couponService;
     private readonly CheckoutMessageBusSender _checkoutMessageBus;
 
     public CartService(
         ApplicationDbContext dbContext,
         IMapper mapper,
+        ICouponService couponService,
         CheckoutMessageBusSender checkoutMessageBus)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _couponService = couponService;
         _checkoutMessageBus = checkoutMessageBus;
     }
 
@@ -53,10 +55,10 @@ public class CartService : ICartService
     }
 
     public async Task<Result<CartHeaderDto?>> CreateOrUpdateCart(
-        string userId, int count, ProductDto product)
+        string userId, int countToIncrease, ProductDto product)
     {
-        if (count < 1)
-            return await RemoveFromCart(userId, product.Id);
+        if (countToIncrease < 1)
+            return Result<CartHeaderDto>.Failure("The number of items to add to card should greater than zero.");
 
         // add or update product
         var currentProduct = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == product.Id);
@@ -85,7 +87,7 @@ public class CartService : ICartService
             cartDetail = new CartDetails
             {
                 Id = Guid.NewGuid(),
-                Count = count,
+                Count = countToIncrease,
                 Product = currentProduct,
                 CartHeader = cart
             };
@@ -93,7 +95,7 @@ public class CartService : ICartService
         }
         else
         {
-            cartDetail.Count = count;
+            cartDetail.Count += countToIncrease;
         }
         CalculateCartPrices(cart);
         await _dbContext.SaveChangesAsync();
@@ -184,6 +186,15 @@ public class CartService : ICartService
             model.ActualDiscountAmount != model.Cart!.ActualDiscountAmount ||
             model.FinalPrice != model.Cart!.FinalPrice)
             return Result<object>.Failure("Your cart has been changed. Please check it again.");
+
+        // validate coupon is not changed
+        if (!string.IsNullOrEmpty(model.CouponCode))
+        {
+            var couponResult = await _couponService.GetCoupon(model.CouponCode);
+            if (!couponResult.Succeeded
+                || couponResult.Data!.DiscountAmount != model.DiscountAmount)
+                return Result<object>.Failure("The coupon has been changed. Please remove it and try again.");
+        }
 
         // send message
         await _checkoutMessageBus.PublishMessage(model);

@@ -22,18 +22,22 @@
                     <div class="col-12">
                         <label class="col-form-label">First Name :</label>
                         <input class="form-control" asp-for="FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="col-12">
                         <label class="col-form-label">Last Name :</label>
                         <input class="form-control" asp-for="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="col-12">
                         <label class="col-form-label">Email :</label>
                         <input class="form-control" asp-for="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="col-12">
                         <label class="col-form-label">Phone :</label>
                         <input class="form-control" asp-for="Phone" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     <div class="col-12">
                         <label class="col-form-label">PickUp Time</label>
@@ -42,16 +46,19 @@
                     <div class="col-12">
                         <label class="col-form-label">Card Number :</label>
                         <input class="form-control" asp-for="CardNumber" />
+                        <span asp-validation-for="CardNumber" class="text-danger"></span>
                     </div>
 
                     <div class="col-12">
                         <label class="col-form-label">CVV :</label>
                         <input class="form-control" asp-for="CVV" />
+                        <span asp-validation-for="CVV" class="text-danger"></span>
                     </div>
 
                     <div class="col-12 pb-4">
                         <label class="col-form-label">Expiry :</label>
                         <input placeholder="MMYY" class="form-control" asp-for="ExpiryMonthYear" />
+                        <span asp-validation-for="ExpiryMonthYear" class="text-danger"></span>
                     </div>
                 </div>
             </div>

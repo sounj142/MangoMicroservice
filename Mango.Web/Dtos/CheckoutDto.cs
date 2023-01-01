@@ -1,16 +1,31 @@
-﻿namespace Mango.Web.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Mango.Web.Dtos;
 
 public class CheckoutDto
 {
+    [Required]
     public string? FirstName { get; set; }
+
+    [Required]
     public string? LastName { get; set; }
+
     public DateTime PickupDateTime { get; set; }
     public int TimeZoneOffset { get; set; }
 
+    [Required]
     public string? Phone { get; set; }
+
+    [Required]
     public string? Email { get; set; }
+
+    [Required]
     public string? CardNumber { get; set; }
+
+    [Required]
     public string? CVV { get; set; }
+
+    [Required]
     public string? ExpiryMonthYear { get; set; }
 
     // all values bellow are fore comparison only. We don't save these into database due to

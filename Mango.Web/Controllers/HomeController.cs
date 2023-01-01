@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Commons.Services;
 using Mango.Web.Dtos;
 using Mango.Web.Models;
 using Mango.Web.Services;
@@ -41,16 +40,6 @@ public class HomeController : Controller
                 new { message = productResult.Messages.FirstOrDefault() });
 
         var model = _mapper.Map<ProductDetailsDto>(productResult.Data);
-
-        var cartResult = await _cartService.GetOrCreateCartOfCurrentUser();
-        if (!cartResult.Succeeded)
-            return RedirectToAction("Index", "Error",
-                new { message = cartResult.Messages.FirstOrDefault() });
-
-        var productInCart = cartResult.Data!.CartDetails
-            .FirstOrDefault(x => x.ProductId == model.Id);
-        if (productInCart != null)
-            model.Count = productInCart.Count;
 
         return View(model);
     }

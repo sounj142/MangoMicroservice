@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Web;
 
-namespace Mango.Web.Utils;
+namespace Commons.Utils;
 
 public static class UriHelpers
 {

@@ -1,13 +1,13 @@
 ﻿using Commons;
-using Mango.Web.Models;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using System.Net.Http.Headers;
 using System.Net;
+using Mango.ShoppingCartApi.Models;
 using Commons.Utils;
 
-namespace Mango.Web.Services;
+namespace Mango.ShoppingCartApi.Services;
 
 public class BaseService
 {

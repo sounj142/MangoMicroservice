@@ -1,13 +1,10 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Commons.Services;
-using Mango.MessageBus;
 using Mango.ShoppingCartApi.Mappers;
-using Mango.ShoppingCartApi.Models;
 using Mango.ShoppingCartApi.Repositories;
 using Mango.ShoppingCartApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -21,6 +18,8 @@ public class ConfigureServices
         services.AddDbContext<ApplicationDbContext>(
             options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
         services.AddControllers();
+
+        services.AddHttpClient();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
@@ -86,5 +85,6 @@ public class ConfigureServices
             builder.Configuration["AzureServiceBus:CheckoutMessageTopic"]));
 
         services.AddScoped<ICartService, CartService>();
+        services.AddScoped<ICouponService, CouponService>();
     }
 }

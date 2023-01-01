@@ -1,5 +1,5 @@
 using Mango.ProductAPI;
-using Mango.ProductAPI.DbContexts;
+using Mango.ProductAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

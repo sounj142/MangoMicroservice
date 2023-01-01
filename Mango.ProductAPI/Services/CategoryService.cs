@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Commons;
-using Mango.ProductAPI.DbContexts;
+using Mango.ProductAPI.Repositories;
 using Mango.ProductAPI.Dtos;
 using Microsoft.EntityFrameworkCore;
 

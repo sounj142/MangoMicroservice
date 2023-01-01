@@ -1,4 +1,4 @@
-﻿using Mango.ProductAPI.DbContexts;
+﻿using Mango.ProductAPI.Repositories;
 using Mango.ProductAPI.Mappers;
 using Mango.ProductAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
